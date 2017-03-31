@@ -23,7 +23,7 @@ logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
 # create a log file handler
-logFile = 'logs/arm_data_regression2_' + time.strftime("%d-%m-%Y") + '.log'
+logFile = '../logs/arm_data_regression2_' + time.strftime("%d-%m-%Y") + '.log'
 
 # handler = logging.FileHandler(logFile)
 handler = RotatingFileHandler(logFile, mode='a', maxBytes=100*1024*1024, backupCount=100, encoding=None, delay=0)
@@ -61,18 +61,14 @@ def main():
   training_set = pd.read_csv("../curated data set/ARM4mDec2002Jul2015OklahomaV2_mar_apr_may_date_time_normalized_16000_training_data.csv", skipinitialspace=True,
                              skiprows=1, names=COLUMNS)
   logger.info("Training set loaded into a numpy array...")
-  test_set = pd.read_csv("../curated data set/ARM4mDec2002Jul2015OklahomaV2_mar_apr_may_date_time_normalized_16000_test_data.csv", skipinitialspace=True,
+  test_set = pd.read_csv("../curated data set/ARM4mDec2002Jul2015OklahomaV2_mar_apr_may_date_time_normalized_8000_test_data.csv", skipinitialspace=True,
                          skiprows=1, names=COLUMNS)
   logger.info("Test data loaded into a numpy array...")
 
   # 
-  prediction_set = pd.read_csv("../curated data set/ARM4mDec2002Jul2015OklahomaV2_mar_apr_may_date_time_normalized_16000_validate_data.csv", skipinitialspace=True,
+  prediction_set = pd.read_csv("../curated data set/ARM4mDec2002Jul2015OklahomaV2_mar_apr_may_date_time_normalized_8000_validate_data.csv", skipinitialspace=True,
                                skiprows=1, names=COLUMNS)
   logger.info("Validation data loaded into a numpy array...")
-
-  # Load observed vaues into a numpy array
-  observations = pd.read_csv("../curated data set/ARM4mDec2002Jul2015OklahomaV2_mar_apr_may_date_time_normalized_16000_validate_data_y.csv", skipinitialspace=True)
-  logger.info("Observations...")
 
   # Feature cols
   feature_cols = [tf.contrib.layers.real_valued_column(k)
@@ -95,9 +91,11 @@ def main():
   # logger.info("Type of training set: " + str(type(training_set)))
 
   # Build 2 layer fully connected DNN with 10, 10 units respectively.
-  hidden_unit_array = [20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20]
-  learning_rate_value = 0.0000015
-  steps_value = 25000
+  number_of_hidden_layers = 10
+  number_of_neurons_per_layer = 20
+  hidden_unit_array = list(itertools.repeat(number_of_neurons_per_layer, number_of_hidden_layers))  # 10 copies of 20 neurons
+  learning_rate_value = 0.00015
+  steps_value = 1000
   logger.info("Creating a DNNRegressor with following neural network")
   logger.info("Hidden units: " + str(hidden_unit_array))
   logger.info("Learning rate: " + str(learning_rate_value))
@@ -171,7 +169,7 @@ def main():
   plt.grid()
   logger.info("Title set")
   logger.info("Saving the plot...")
-  plt.savefig("arm_data_16000_" + title_text + ".png", dpi=1200)
+  plt.savefig("../plots/" + "arm_data_16000_" + title_text + "_" + time.strftime("%d-%m-%Y")  + ".png", dpi=1200)
   
   experiment_end = time.time()
   elapsed = experiment_end - experiment_start
