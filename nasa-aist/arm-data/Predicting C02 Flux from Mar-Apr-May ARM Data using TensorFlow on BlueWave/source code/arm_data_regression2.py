@@ -17,6 +17,9 @@ from math import sqrt
 import matplotlib.pyplot as plt
 import plotly.plotly as py
 from sklearn import preprocessing
+import multiprocessing
+import os
+
 
 # Setting up the logger
 logger = logging.getLogger(__name__)
@@ -162,14 +165,15 @@ def main():
   plt.xlabel('Observations')
   plt.ylabel('Predictions')
   logger.info("Axis labels created")
-  title_text = "GradientDescentOptimizer, number of hidden layers " + str(len(hidden_unit_array)) + ", steps " + str(steps_value) + ", learning rate " + str(learning_rate_value) + ", rmse " + str(rmse) + ", " + training_time_log_string + ", " + validation_time_log_string
+  title_text = "GradientDescentOptimizer-hidden-layers-" + str(len(hidden_unit_array)) + "-steps-" + str(steps_value) + "-learning rate-" + str(learning_rate_value) + "-rmse-" + str(rmse) + "-" + training_time_log_string + "-" + validation_time_log_string + "-cpus-in-the-system-" + str(multiprocessing.cpu_count()) 
   plt.title(title_text)
   plt.ylim([-40, 30])
   plt.xlim([-40, 30])
   plt.grid()
   logger.info("Title set")
   logger.info("Saving the plot...")
-  plt.savefig("../plots/" + "arm_data_16000_" + title_text + "_" + time.strftime("%d-%m-%Y")  + ".png", dpi=1200)
+  plot_file_name =  "arm_data_16000_" + title_text + "_" + time.strftime("%d-%m-%Y")  + ".png"
+  plt.savefig("../plots/" + plot_file_name, dpi=1200)
   
   experiment_end = time.time()
   elapsed = experiment_end - experiment_start
