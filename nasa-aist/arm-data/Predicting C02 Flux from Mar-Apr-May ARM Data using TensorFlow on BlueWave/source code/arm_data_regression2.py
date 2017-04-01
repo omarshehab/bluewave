@@ -55,6 +55,25 @@ def input_fn(data_set):
   return feature_cols, labels
 
 
+def log_descriptive_statistics(dataset):
+  logger.info("\n\n\n\nLogging descriptive statistics --------------------------------------------------------------------------------")
+  logger.info("Number of columns: " + str(len(dataset.columns)))
+  logger.info("Number of rows: " + str(dataset.shape[0]))
+  columns = list(dataset.columns.values)
+  logger.info("Columns: " + str(columns))
+
+  
+  logger.info("Mean, Standard Deviation, Maximum, Minimum")
+  
+  for column in columns:
+    data = dataset[column]
+    # Now I have the data
+    line = column + ": " + str(data.describe())
+    logger.info(line)
+    
+
+
+
 def main():
   # Start the timer
   experiment_start = time.time()
@@ -64,14 +83,19 @@ def main():
   training_set = pd.read_csv("../curated data set/ARM4mDec2002Jul2015OklahomaV2_mar_apr_may_date_time_normalized_16000_training_data.csv", skipinitialspace=True,
                              skiprows=1, names=COLUMNS)
   logger.info("Training set loaded into a numpy array...")
+  log_descriptive_statistics(training_set)
+
   test_set = pd.read_csv("../curated data set/ARM4mDec2002Jul2015OklahomaV2_mar_apr_may_date_time_normalized_8000_test_data.csv", skipinitialspace=True,
                          skiprows=1, names=COLUMNS)
   logger.info("Test data loaded into a numpy array...")
+  log_descriptive_statistics(test_set)
 
   # 
   prediction_set = pd.read_csv("../curated data set/ARM4mDec2002Jul2015OklahomaV2_mar_apr_may_date_time_normalized_8000_validate_data.csv", skipinitialspace=True,
                                skiprows=1, names=COLUMNS)
   logger.info("Validation data loaded into a numpy array...")
+  log_descriptive_statistics(prediction_set)
+
 
   # Feature cols
   feature_cols = [tf.contrib.layers.real_valued_column(k)
