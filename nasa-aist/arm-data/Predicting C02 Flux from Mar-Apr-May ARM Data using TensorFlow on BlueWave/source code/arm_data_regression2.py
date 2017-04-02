@@ -4,6 +4,11 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
+# Import smtplib for the actual sending function
+import smtplib
+
+# Import the email modules we'll need
+from email.mime.text import MIMEText
 import matplotlib
 matplotlib.use('Agg')
 import itertools
@@ -118,6 +123,7 @@ def main():
   # logger.info("Type of training set: " + str(type(training_set)))
 
   # Build 2 layer fully connected DNN with 10, 10 units respectively.
+  email_report = True
   number_of_hidden_layers = 10
   number_of_neurons_per_layer = 20
   hidden_unit_array = list(itertools.repeat(number_of_neurons_per_layer, number_of_hidden_layers))  # 10 copies of 20 neurons
@@ -207,6 +213,15 @@ def main():
   logger.info( log_string)
   log_string = "------|||||| END OF EXPERIMENT ||||||------"
   logger.info( log_string)
+  # me == the sender's email address
+  # you == the recipient's email address
+  
+  # Send the message via our own SMTP server, but don't include the
+  # envelope header.
+  s = smtplib.SMTP('localhost')
+  if email_report:
+   s.sendmail("bluewave@chmpr.umbc.edu", ["shehab1@umbc.edu"], log_string)
+  s.quit()
 
 if __name__ == "__main__":
   tf.app.run()
