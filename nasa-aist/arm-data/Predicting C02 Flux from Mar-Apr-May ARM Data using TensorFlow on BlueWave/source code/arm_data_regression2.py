@@ -24,6 +24,8 @@ import plotly.plotly as py
 from sklearn import preprocessing
 import multiprocessing
 import os
+import scipy
+import numpy as np
 
 
 # Setting up the logger
@@ -186,6 +188,21 @@ def main():
   rmse = sqrt(mean_squared_error(observations_list, predictions))
   logger.info("RMSE: " + str(rmse))
 
+  logger.info("Type of observations_list: " + str(type(observations_list)))
+  logger.info("Type of predictions: " + str(type(predictions)))
+
+  logger.info("Dimension of observations_list: " + str(np.reshape(np.array(observations_list), (7995, )).shape))
+  logger.info("Dimension of predictions: " + str(np.array(predictions).shape))
+  
+  observations_array = np.reshape(np.array(observations_list), (7995, ))
+  predictions_array = np.array(predictions)
+
+  logger.info("Computing Pearson's correlation coefficient...")
+  logger.info("Length of observations: " + str(len(observations_list)))
+  logger.info("Length of predictions: " + str(len(predictions)))
+  pearsonr = scipy.stats.pearsonr(observations_array, predictions_array)
+  logger.info("Pearson's correlation coefficient: " + str(pearsonr))
+
   logger.info("Creating the plot...")
   fig = plt.figure()
   plt.subplots_adjust(top=0.85)
@@ -195,7 +212,7 @@ def main():
   plt.xlabel('Observations')
   plt.ylabel('Predictions')
   logger.info("Axis labels created")
-  title_text = "GradientDescentOptimizer-hidden-layers-" + str(len(hidden_unit_array)) + "-steps-" + str(steps_value) + "-learning rate-" + str(learning_rate_value) + "-rmse-" + str(rmse) + "-" + training_time_log_string + "-" + validation_time_log_string + "-cpus-in-the-system-" + str(multiprocessing.cpu_count()) 
+  title_text = "GradientDescentOptimizer-hidden-layers-" + str(len(hidden_unit_array)) + "-steps-" + str(steps_value) + "-learning rate-" + str(learning_rate_value) + "\n-rmse-" + str(rmse) + "-correlation-" + str(pearsonr[0])  + "-" + training_time_log_string + "\n-" + validation_time_log_string + "-cpus-in-the-system-" + str(multiprocessing.cpu_count()) 
   plt.title(title_text)
   plt.ylim([-40, 30])
   plt.xlim([-40, 30])
