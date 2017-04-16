@@ -197,11 +197,21 @@ def main():
   observations_array = np.reshape(np.array(observations_list), (7995, ))
   predictions_array = np.array(predictions)
 
+  # Computing Pearson's correlatin coefficient
   logger.info("Computing Pearson's correlation coefficient...")
   logger.info("Length of observations: " + str(len(observations_list)))
   logger.info("Length of predictions: " + str(len(predictions)))
   pearsonr = scipy.stats.pearsonr(observations_array, predictions_array)
   logger.info("Pearson's correlation coefficient: " + str(pearsonr))
+
+  # Computing information content
+  logger.info("Computng information content...")
+  observations_histogram = np.histogram(observations_array, bins='sturges')
+  predictions_histogram = np.histogram(predictions_array, bins='sturges')
+  logger.info("Histogram of observations...")
+  logger.info(str(observations_histogram))
+  logger.info("Histogram of predictions...")
+  logger.info(str(predictions_histogram))
 
   logger.info("Creating the plot...")
   fig = plt.figure()
