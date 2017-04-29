@@ -11,10 +11,10 @@ import maxflow
 # image_file = "halem-noise2"
 # image_file = "g/gsp/10"
 # image_file = "g/gn/a2"
-image_file = "g/org/a2"
+image_file = "/home/shehab1/python-code-bw/img-seg/g/org/a2"
 
 print "Reading image as an array: "
-img = imread(image_file + ".png")
+img = Image.open(image_file + ".png")
 print "Image as an array: " + str(img)
 
 print "Shape of the image: " + str(img.shape)
