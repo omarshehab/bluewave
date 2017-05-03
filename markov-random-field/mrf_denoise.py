@@ -1,4 +1,7 @@
 # Image denoising using MRF model
+
+# PIL can handle the BMP inputs but not the PNG inputs.
+
 from PIL import Image
 import numpy
 from pylab import *
