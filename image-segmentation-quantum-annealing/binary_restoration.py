@@ -1,3 +1,5 @@
+# This code does not use the energy minimization technique directly.
+
 from PIL import Image
 # import Image
 try:
