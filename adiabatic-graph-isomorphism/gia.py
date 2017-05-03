@@ -1,4 +1,7 @@
 #%matplotlib inline
+
+# I have talked to the QuTip developers. The error will not go away until I download the patch of the latest bug fix.
+
 import matplotlib.pyplot as plt
 import numpy as np
 
