@@ -4,21 +4,31 @@
 
 from PIL import Image
 import numpy
+numpy.set_printoptions(threshold=numpy.nan)
 from pylab import *
 
 def main():
 
 	# Read in image
-	im=Image.open('two-seg-10-by-10.bmp')
+        name = 'lena512-32'
+        print "Reading the image..."
+	im=Image.open(name + '.bmp')
 	im=numpy.array(im)
+        print "Shape: " + str(im.shape)
+        print "Converting into binary..."
 	im=where (im>100,1,0) #convert to binary image
+        print "Shape: " + str(im.shape)
+        (Image.fromarray(np.uint8(cm.gist_earth(im) * 255))).save(name + '-binary.bmp')
 	(M,N)=im.shape
 
 	# Add noise
+        print "Adding noise..."
 	noisy=im.copy()
 	noise=numpy.random.rand(M,N)
 	ind=where(noise<0.2)
 	noisy[ind]=1-noisy[ind]
+        print "Saving noisy image..."
+        (Image.fromarray(np.uint8(cm.gist_earth(noisy) * 255))).save(name + '-noisy.bmp')
 
 	# gray()
 	# title('Noisy Image')
@@ -27,7 +37,7 @@ def main():
 	out=MRF_denoise(noisy)
         im = Image.fromarray(np.uint8(cm.gist_earth(out)*255))
      
-        im.save('out.bmp')
+        im.save(name + '-denoised.bmp')
 	
 	# figure()		
 	# gray()
@@ -36,16 +46,19 @@ def main():
 	# show()
 
 def MRF_denoise(noisy):
+        print "MRF_denoise()..."
 	# Start MRF	
 	(M,N)=noisy.shape
-	print "Shame of the image: " + str((M, N))
+	print "Shape of the image: " + str((M, N))
 	y_old=noisy
 	y=zeros((M,N))
 
+        print "While loop starting..."
 	while(SNR(y_old,y)>0.01):
 		print SNR(y_old,y)
 		for i in range(M):
 			for j in range(N):
+                                print "Current pixel: " + str(i) + ", " + str(j)
 				index=neighbor(i,j,M,N)
 				
 				a=cost(1,noisy[i,j],y_old,index)
@@ -56,6 +69,7 @@ def MRF_denoise(noisy):
 				else:
 					y[i,j]=0
 		y_old=y
+        print "Last SNR: "
 	print SNR(y_old,y)
 	return y
 
@@ -98,8 +112,9 @@ def neighbor(i,j,M,N):
 def cost(y,x,y_old,index):
 	alpha=1
 	beta=10
-	return alpha*delta(y,x)+\
-		beta*sum(delta(y,y_old[i]) for i in index)
+        costt = alpha*delta(y,x)+ beta*sum(delta(y,y_old[i]) for i in index)
+        print "Cost of current pixel " + str(x)  +  " to be label " + str(y) + " with neighbors " + str(index) + " is " + str(costt)
+	return costt
 
 if __name__=="__main__":
 	main()
