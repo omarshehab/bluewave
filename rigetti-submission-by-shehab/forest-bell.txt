@@ -1,0 +1,52 @@
+In this exercise you will use Rigetti Computing's quantum programming API,
+called Forest (http://forest.rigetti.com) to implement a small quantum 
+program. An introduction to using the library is available at:
+http://pyquil.readthedocs.io/en/latest/
+
+You can either use your own Forest credentials or the credentials that
+accompany this document in the .pyquil_config file. Information about how
+to connect to Forest can be found at:
+http://pyquil.readthedocs.io/en/latest/getting_started.html
+
+In addition to working on the challenge, be prepared to comment 
+on the libraries themselves. Using Quil or pyQuil, please implement a program 
+to accomplish as much of the following as possible using as few quantum gates as
+you can:
+
+Goal 1: Output one of the four Bell states. (Some info can be found
+here: https://en.wikipedia.org/wiki/Bell_state)
+
+Goal 2: Take as input an integer N. Output an N-qubit state
+
+    (|000...0> + |111...1>) / sqrt(2)
+
+Goal 3: Same as Goal 2, except now the qubits you use are arranged on
+the vertices of an N x N square lattice and the only two-qubit gates
+available happen between neighboring qubits in the lattice, e.g. for
+qubits numbered:
+
+    6 7 8
+    3 4 5
+    0 1 2
+
+there is a two qubit gate allowed between (1 and 2) and (5 and 2) but
+not between 2 and any other qubit.
+
+No need to worry about implementing any kind of measurement on these states.
+Just attempt to create the appropriate objects. Let me know if you have any
+other questions as you approach the solution.
+
+Goal 4: Generalization.
+
+Consider a collection of qubits in a quantum computer. Due to locality
+constraints, two-qubit gates can often only be applied to neighboring
+qubits, for some notion of "neighboring". This leads to a graph
+structure, where edges of this graph represent where two-qubit gates
+can be applied.
+
+Using pyQuil, write a function to produce the |V|-qubit
+state
+
+    (|000...0> + |111...1>) / sqrt(2)
+
+on a graph G = (V, E).
