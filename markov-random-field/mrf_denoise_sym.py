@@ -6,6 +6,7 @@ from PIL import Image
 import numpy
 numpy.set_printoptions(threshold=numpy.nan)
 from pylab import *
+from sympy import *
 
 def main():
 
@@ -51,7 +52,8 @@ def MRF_denoise(noisy):
 	(M,N)=noisy.shape
 	print "Shape of the image: " + str((M, N))
 	y_old=noisy
-	y=zeros((M,N))
+	# y=zeros((M,N))
+        y = MatrixSymbol('Y', M, N)
 
         print "While loop starting..."
 	while(SNR(y_old,y)>0.01):
@@ -84,6 +86,11 @@ def palta(a, b):
 
 def paltaex(a, b):
         return "1 - ( " + str(a) + " - " + str(b) + " )"
+
+# This function is a symbolic version of delta function
+# for this project.
+def delta_sym(a, b):
+        return 1 - (a - b)
 
 def delta(a,b):
 	if (a==b):
@@ -121,6 +128,11 @@ def neighbors_to_variables(var, neighbors):
            expression = expression + " + "  + var + "_" + str(tuple[0]) + "_" + str(tuple[1]) + " "
         return expression
 
+
+def cost_sym(y, x, y_old, index):
+        alpha = 1
+        beta = 10
+        cost_sym = alpha * delta
 
 def cost(y,x,y_old,index):
 	alpha=1
