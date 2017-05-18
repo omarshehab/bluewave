@@ -1,0 +1,89 @@
+2017-05-17 02:28:26,819 - randomg - INFO - 
+
+
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>Experiment started --------------------------------------------------------------------------------
+2017-05-17 02:28:26,820 - randomg - INFO - Generating graph with 100  nodes and edge probability 0.5
+2017-05-17 02:29:04,375 - randomg - INFO - 
+
+
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>Experiment started --------------------------------------------------------------------------------
+2017-05-17 02:29:04,376 - randomg - INFO - Generating graph with 100  nodes and edge probability 0.5
+2017-05-17 02:29:04,457 - randomg - INFO - API call time: 00:00:00.01
+2017-05-17 02:30:14,717 - randomg - INFO - 
+
+
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>Experiment started --------------------------------------------------------------------------------
+2017-05-17 02:30:14,718 - randomg - INFO - Generating graph with 100  nodes and edge probability 0.5
+2017-05-17 02:30:14,790 - randomg - INFO - API call time: 00:00:00.01
+2017-05-17 02:31:40,667 - randomg - INFO - 
+
+
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>Experiment started --------------------------------------------------------------------------------
+2017-05-17 02:31:40,674 - randomg - INFO - Generating graph with 100  nodes and edge probability 0.5
+2017-05-17 02:31:40,750 - randomg - INFO - API call time: 00:00:00.01
+2017-05-17 02:50:57,098 - randomg - INFO - 
+
+
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>Experiment started --------------------------------------------------------------------------------
+2017-05-17 02:50:57,099 - randomg - INFO - Generating graph with 100  nodes and edge probability 0.5
+2017-05-17 02:50:57,217 - randomg - INFO - API call time: 00:00:00.01
+2017-05-17 02:50:57,363 - randomg - INFO - File write time: 00:00:00.01
+2017-05-17 12:46:27,761 - randomg - INFO - 
+
+
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>Experiment started --------------------------------------------------------------------------------
+2017-05-17 12:46:27,761 - randomg - INFO - Generating graph with 1000  nodes and edge probability 0.5
+2017-05-17 12:46:28,492 - randomg - INFO - API call time: 00:00:00.66
+2017-05-17 12:46:29,724 - randomg - INFO - File write time: 00:00:01.11
+2017-05-17 12:46:29,927 - randomg - INFO - 
+
+
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>Experiment started --------------------------------------------------------------------------------
+2017-05-17 12:46:29,991 - randomg - INFO - Generating graph with 2000  nodes and edge probability 0.5
+2017-05-17 12:46:32,605 - randomg - INFO - API call time: 00:00:02.55
+2017-05-17 12:46:37,400 - randomg - INFO - File write time: 00:00:04.73
+2017-05-17 12:46:37,928 - randomg - INFO - 
+
+
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>Experiment started --------------------------------------------------------------------------------
+2017-05-17 12:46:37,995 - randomg - INFO - Generating graph with 3000  nodes and edge probability 0.5
+2017-05-17 12:46:44,096 - randomg - INFO - API call time: 00:00:06.03
+2017-05-17 12:46:56,245 - randomg - INFO - File write time: 00:00:12.07
+2017-05-17 12:46:56,860 - randomg - INFO - 
+
+
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>Experiment started --------------------------------------------------------------------------------
+2017-05-17 12:46:56,927 - randomg - INFO - Generating graph with 4000  nodes and edge probability 0.5
+2017-05-17 12:47:07,546 - randomg - INFO - API call time: 00:00:10.55
+2017-05-17 12:47:27,555 - randomg - INFO - File write time: 00:00:20.00
+2017-05-17 12:47:28,706 - randomg - INFO - 
+
+
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>Experiment started --------------------------------------------------------------------------------
+2017-05-17 12:47:28,774 - randomg - INFO - Generating graph with 5000  nodes and edge probability 0.5
+2017-05-17 12:47:45,183 - randomg - INFO - API call time: 00:00:16.34
+2017-05-17 12:48:17,539 - randomg - INFO - File write time: 00:00:32.35
+2017-05-17 12:52:11,690 - randomg - INFO - 
+
+
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>Experiment started --------------------------------------------------------------------------------
+2017-05-17 12:52:11,690 - randomg - INFO - Generating graph with 10000  nodes and edge probability 0.5
+2017-05-17 12:53:26,622 - randomg - INFO - API call time: 00:01:14.85
+2017-05-17 13:23:06,924 - randomg - INFO - File write time: 00:29:40.25
+2017-05-17 13:23:15,401 - randomg - INFO - 
+
+
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>Experiment started --------------------------------------------------------------------------------
+2017-05-17 13:23:15,402 - randomg - INFO - Generating graph with 20000  nodes and edge probability 0.5
