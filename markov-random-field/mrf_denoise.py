@@ -18,7 +18,7 @@ def main():
         print "Converting into binary..."
 	im=where (im>100,1,0) #convert to binary image
         print "Shape: " + str(im.shape)
-        (Image.fromarray(np.uint8(cm.gist_earth(im) * 255))).save(name + '-binary.bmp')
+        (Image.fromarray(np.uint8(cm.gist_earth(im) * 255))).save(name + '-classical-binary.bmp')
 	(M,N)=im.shape
 
 	# Add noise
@@ -28,7 +28,7 @@ def main():
 	ind=where(noise<0.2)
 	noisy[ind]=1-noisy[ind]
         print "Saving noisy image..."
-        (Image.fromarray(np.uint8(cm.gist_earth(noisy) * 255))).save(name + '-noisy.bmp')
+        (Image.fromarray(np.uint8(cm.gist_earth(noisy) * 255))).save(name + '-classical-noisy.bmp')
 
 	# gray()
 	# title('Noisy Image')
@@ -37,7 +37,7 @@ def main():
 	out=MRF_denoise(noisy)
         im = Image.fromarray(np.uint8(cm.gist_earth(out)*255))
      
-        im.save(name + '-denoised.bmp')
+        im.save(name + '-classical-denoised.bmp')
 	
 	# figure()		
 	# gray()
@@ -54,7 +54,9 @@ def MRF_denoise(noisy):
 	y=zeros((M,N))
 
         print "While loop starting..."
+        snr_count = 0
 	while(SNR(y_old,y)>0.01):
+                snr_count = snr_count + 1
 		print SNR(y_old,y)
 		for i in range(M):
 			for j in range(N):
@@ -70,6 +72,7 @@ def MRF_denoise(noisy):
 					y[i,j]=0
 		y_old=y
         print "Last SNR: "
+        print "SNR count: " + str(snr_count)
 	print SNR(y_old,y)
 	return y
 
