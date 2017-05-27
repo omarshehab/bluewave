@@ -40,7 +40,7 @@ def main():
         binary_threshold = 100
         dw_range = 4
 
-        experiment_start = time.time()
+        experiment_start_time = time.time()
         binary_image_creation_start_time = time.time()
 
 	# Read in image
@@ -220,11 +220,11 @@ def main():
         diagonal = []
         for var in variables:
            term = term_dict[var]
-           if term < (1/3):
+           if abs(term) < (1.0/3):
               less_than_one_third = less_than_one_third + 1
            else:
               logger.info(str(term) + " is greater than 1/3")
-           if term < (1/(2**7)):
+           if abs(term) < (1.0/(2**7)):
               less_than_two_to_seventh = less_than_two_to_seventh + 1
            else:
               logger.info(str(term) + " is greater than 1/2^7")
@@ -235,8 +235,8 @@ def main():
         logger.info("Maximum: " + str(max(diagonal)))
         logger.info("Minimum: " + str(min(diagonal)))
 
-        logger.info(str(less_than_one_third) + " out of " + str(len(variables)) + " coefficients are less than 1/3")
-        logger.info(str(less_than_two_to_seventh) + " out of " + str(len(variables)) + " coefficients are less than 1/2^7")
+        logger.info(str(less_than_one_third) + " out of " + str(len(variables)) + " coefficients (absolute value) are less than 1/3")
+        logger.info(str(less_than_two_to_seventh) + " out of " + str(len(variables)) + " coefficients (absolute value) are less than 1/2^7")
 
         logger.info("Creating off-diagonal matrix")
         off_diagonal = []
