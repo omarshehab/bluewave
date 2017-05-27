@@ -14,6 +14,9 @@ from logging.handlers import RotatingFileHandler
 import time
 from sympy.parsing.sympy_parser import *
 import math
+from dwave_sapi2.remote import RemoteConnection
+from dwave_sapi2.core import solve_ising, solve_qubo
+
 
 # Setting up the logger
 logger = logging.getLogger(__name__)
@@ -141,10 +144,10 @@ def main():
         target_simpl.close()
         logger.info("Closed")    
 
-        logger.info("Degree list of the expression...")  
-        deg_list = degree_list(out)
-        logger.info(str(deg_list))
-        logger.info("Size of degree list: " + str(len(deg_list)))
+        # logger.info("Degree list of the expression...")  
+        # deg_list = degree_list(out)
+        # logger.info(str(deg_list))
+        # logger.info("Size of degree list: " + str(len(deg_list)))
         logger.info("Number of variables: " + str(len(variables)))        
 
         for var in variables:
@@ -223,11 +226,11 @@ def main():
            if abs(term) < (1.0/3):
               less_than_one_third = less_than_one_third + 1
            else:
-              logger.info(str(term) + " is greater than 1/3")
+              logger.info("Absolute value of " + str(term) + " is greater than 1/3")
            if abs(term) < (1.0/(2**7)):
               less_than_two_to_seventh = less_than_two_to_seventh + 1
            else:
-              logger.info(str(term) + " is greater than 1/2^7")
+              logger.info("Absolute value of " + str(term) + " is greater than 1/2^7")
 
 
            diagonal.append(term_dict[var])
@@ -254,13 +257,109 @@ def main():
         expression_creation_time_log_string = "Expression creation time: " + "{:0>2}:{:0>2}:{:05.2f}".format(int(expression_creation_hours), int(expression_creation_minutes), expression_creation_seconds)
         logger.info(expression_creation_time_log_string)
 
+        remote_connection = RemoteConnection("https://qubist.dwavesys.com/sapi", "umbc-392c8c929cd65b3bcc3d4633775805e2f12bac9f")
+        logger.info("DWave connection opened: " + str(remote_connection))
+
+        solver_names = remote_connection.solver_names()
+        logger.info("Solvers: " + str(solver_names))
+
+        solver = remote_connection.get_solver("DW2X")
+        logger.info("Solver: " + str(solver))
+
+        properties = solver.properties
+
+        # logger.info(str(properties))
+
+        logger.info("Chip ID: " + str(properties['chip_id']))
+        logger.info("Supported problem types: " + str(properties['supported_problem_types']))
+        logger.info("Programming thermalization range: " + str(properties['programming_thermalization_range']))
+        logger.info("Parameters...")
+       
+        parameters = properties['parameters']
+        logger.info(str(parameters))
+
+        logger.info("H range: " + str(properties['h_range']))
+
+        logger.info("Total number of qubits: " + str(properties['num_qubits']))
+
+        qubits = properties['qubits']
+
+        logger.info("Total number of available qubits: " + str(len(qubits)))
+
+        logger.info("Missing qubits: " + str(len(qubits) - properties['num_qubits']))
+
+        missing_qubits = []
+
+        for qubit in range(0, len(qubits)):
+           if qubit not in qubits:
+              missing_qubits.append(qubit)
+              logger.info("Qubit # " + str(qubit) + " missing...")
+
+        Q = {}
+        used_qubits = []
+
+        logger.info("Converting diagonal into q QUBO problem: ")
+        for term_index in range(0, len(diagonal)):
+           qubit = qubits[term_index]
+           used_qubits.append(qubit)
+           Q[(qubit, qubit)] = diagonal[term_index]
+
+        logger.info("Size of Python dictionary: " + str(len(Q)))
+        logger.info("Problem Q: " + str(Q))
+   
+        logger.info("Number of used qubits: " + str(len(used_qubits)))
+        logger.info(str(used_qubits))
+
+        answer = solve_qubo(solver, Q)
+        timing = answer['timing']
+
+        logger.info("Timing")
+        logger.info("Total real time: " + str(timing['total_real_time']))
+        logger.info("Anneal time per run: " + str(timing['anneal_time_per_run']))
+        logger.info("Post processing overhead time: " + str(timing['post_processing_overhead_time']))
+        logger.info("QPU sampling time: " + str(timing['qpu_sampling_time']))
+        logger.info("Readout time per run: " + str(timing['readout_time_per_run']))
+        logger.info("QPU delay time per sample: " + str(timing['qpu_delay_time_per_sample']))
+        logger.info("QPU anneal time per sample: " + str(timing['qpu_anneal_time_per_sample']))
+        logger.info("Total post processing time: " + str(timing['total_post_processing_time']))
+        logger.info("QPU programming time: " + str(timing['qpu_programming_time']))
+        logger.info("Run time chip: " + str(timing['run_time_chip']))
+        logger.info("QPU access time: " + str(timing['qpu_access_time']))
+        logger.info("QPU readout time per sample: " + str(timing['qpu_readout_time_per_sample']))
+
+        logger.info("Energies: " + str(answer['energies']))
+
+        logger.info("Num occurrences: " + str(answer['num_occurrences']))
+
+        solutions = answer['solutions']
+        logger.info("Number of solutions: " + str(len(solutions)))
+        logger.info("Length of the best solution: " + str(len(solutions[0])))
+        logger.info("The best solutions: ")
+        best_solution = solutions[0]
+        logger.info(str(best_solution))
+
+        logger.info("Removing unused qubits: ")
+        clean_solution = []
+
+        for used_qubit in used_qubits:
+           clean_solution.append(best_solution[used_qubit])
+
+        logger.info("Length of clean solution: " + str(len(clean_solution)))
+        logger.info(str(clean_solution))
+
+        
+  
 
         experiment_end_time = time.time()
         experiment_elapsed_time = experiment_end_time - experiment_start_time
         experiment_hours, experiment_rem = divmod(experiment_elapsed_time, 3600)
         experiment_minutes, experiment_seconds = divmod(experiment_rem, 60)
-        experiment_time_log_string = "Expression creation time: " + "{:0>2}:{:0>2}:{:05.2f}".format(int(experiment_hours), int(experiment_minutes), experiment_seconds)
+        experiment_time_log_string = "Experiment time: " + "{:0>2}:{:0>2}:{:05.2f}".format(int(experiment_hours), int(experiment_minutes), experiment_seconds)
         logger.info(experiment_time_log_string)
+
+
+        
+        
 
 
 def MRF_denoise_sym(noisy):
