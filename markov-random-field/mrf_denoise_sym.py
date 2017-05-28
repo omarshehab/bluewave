@@ -102,6 +102,13 @@ def main():
         logger.info("Saving the binary image...")
         (Image.fromarray(np.uint8(cm.gist_earth(im) * 255))).save(name + '-binary.bmp')
 
+        logger.info("Segmenting the binary image: ")
+        out_bin = MRF_denoise_sym(im)
+        logger.info("Saving the segmented binary image...")
+        out_bin_im = Image.fromarray(np.uint8(cm.gist_earth(out_bin)*255))
+        out_bin_im.save(name + '-segmented.bmp')
+
+
         binary_image_creation_end_time = time.time()
         binary_image_creation_elapsed_time = binary_image_creation_end_time - binary_image_creation_start_time
         binary_image_creation_hours, binary_image_creation_rem = divmod(binary_image_creation_elapsed_time, 3600)
