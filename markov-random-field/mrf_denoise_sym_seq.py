@@ -36,7 +36,7 @@ handler.setFormatter(formatter)
 # add the handlers to the logger
 logger.addHandler(handler)
 
-# variables = []
+variables = []
 
 remote_connection = RemoteConnection("https://qubist.dwavesys.com/sapi", "umbc-392c8c929cd65b3bcc3d4633775805e2f12bac9f")
 logger.info("DWave connection opened: " + str(remote_connection))
@@ -95,7 +95,6 @@ def main():
 	im=Image.open(name + '.bmp')
 	im=np.array(im)
         logger.info("Shape of the original image: " + str(im.shape))
-
         logger.info("Converting into binary...")
 	im=where (im>100,1,0) #convert to binary image
 
@@ -151,7 +150,6 @@ def main():
 
 
 def MRF_denoise_sym(noisy):
-        variables = []
         print "MRF_denoise_sym()..."
 	# Start MRF	
 	(M,N)=noisy.shape
@@ -172,13 +170,13 @@ def MRF_denoise_sym(noisy):
                    # print final_cost_expression
                    logger.info(str(final_cost_expression))
 		   for j in range(N):
-                           # logger.info("Current column: " + str(j) )
+                           logger.info("Current column: " + str(j) )
 		   	   index=neighbor(i,j,M,N)
-                           # logger.info("Neighbors: " + str(index) )
+                           logger.info("Neighbors: " + str(index) )
 			   x = symbols('x_' + str(i) + "_" + str(j))
                            variables.append(x)
 			   cost_expression_for_pixel = cost_sym(x, noisy[i,j], y_old, index)
-                           # logger.info("Cost expression for pixel: " + str(cost_expression_for_pixel) )
+                           logger.info("Cost expression for pixel: " + str(cost_expression_for_pixel) )
                            final_cost_expression = final_cost_expression + cost_expression_for_pixel
            # print final_cost_expression
 	   final_cost_expression = ((-1) * final_cost_expression)
@@ -245,7 +243,7 @@ def MRF_denoise_sym(noisy):
 
            for var in variables:
               var_str = str(var)
-              # logger.info("Occurence of " + var_str + " is " + str(out_sym_str.count(var_str)))
+              logger.info("Occurence of " + var_str + " is " + str(out_sym_str.count(var_str)))
 
            logger.info("Creating the dictionary of coefficients...")
            term_dict = out_sym.as_coefficients_dict()
@@ -319,12 +317,12 @@ def MRF_denoise_sym(noisy):
               term = term_dict[var]
               if abs(term) < (1.0/3):
                  less_than_one_third = less_than_one_third + 1
-              # else:
-              #    logger.info("Absolute value of " + str(term) + " is greater than 1/3")
+              else:
+                 logger.info("Absolute value of " + str(term) + " is greater than 1/3")
               if abs(term) < (1.0/(2**7)):
                  less_than_two_to_seventh = less_than_two_to_seventh + 1
-              # else:
-              #    logger.info("Absolute value of " + str(term) + " is greater than 1/2^7")
+              else:
+                 logger.info("Absolute value of " + str(term) + " is greater than 1/2^7")
 
 
               diagonal.append(term_dict[var])
@@ -335,14 +333,14 @@ def MRF_denoise_sym(noisy):
            logger.info(str(less_than_one_third) + " out of " + str(len(variables)) + " coefficients (absolute value) are less than 1/3")
            logger.info(str(less_than_two_to_seventh) + " out of " + str(len(variables)) + " coefficients (absolute value) are less than 1/2^7")
 
-           # logger.info("Creating off-diagonal matrix")
-           # off_diagonal = []
-           # for var1 in variables:
-           #    for var2 in variables:
-           #       if var1 != var2:
-           #          if  (var1 * var2) in term_dict:
-           #             off_diagonal[var1 * var2] = term_dict[var1 * var2]
-           # logger.info(str(off_diagonal))
+           logger.info("Creating off-diagonal matrix")
+           off_diagonal = []
+           for var1 in variables:
+              for var2 in variables:
+                 if var1 != var2:
+                    if  (var1 * var2) in term_dict:
+                       off_diagonal[var1 * var2] = term_dict[var1 * var2]
+           logger.info(str(off_diagonal))
 
            expression_creation_end_time = time.time()
            expression_creation_elapsed_time = expression_creation_end_time - expression_creation_start_time
@@ -432,7 +430,7 @@ def MRF_denoise_sym(noisy):
 # for this project.
 def delta_sym(a, b):
         delta_expr = ((a * b) + ((1 - a) * (1 - b)))
-        # logger.info("Delta function: " + str(delta_expr))
+        logger.info("Delta function: " + str(delta_expr))
         return delta_expr
 
 def neighbor(i,j,M,N):
@@ -471,9 +469,9 @@ def cost_sym(y, x, y_old, index):
         beta = 10
 
         term1 = alpha * delta_sym(y,x)
-        # logger.info("Term 1: " + str(term1))
+        logger.info("Term 1: " + str(term1))
         term2 = beta * sum(delta_sym(y,y_old[i]) for i in index)
-        # logger.info("Term 2: " + str(term2))
+        logger.info("Term 2: " + str(term2))
 
         cost_sym = term1 + term2
         return cost_sym
